@@ -9,7 +9,7 @@
 Summary: An unwinding library
 Name: libunwind
 Version: 1.0.1
-Release: 1
+Release: 2
 License: BSD
 Group: System/Libraries
 Source0: http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
@@ -40,6 +40,7 @@ Dynamic libraries from %{name}.
 Summary: Development package for libunwind
 Group: Development/C
 Requires: libunwind = %{version}-%{release}
+Provides: libunwind-devel = %{version}-%{release}
 
 %description -n %{develname}
 The libunwind-devel package includes the libraries and header files for
