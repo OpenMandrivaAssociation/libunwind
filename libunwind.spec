@@ -9,12 +9,13 @@
 Summary: An unwinding library
 Name: libunwind
 Version: 1.0.1
-Release: 2
+Release: 3
 License: BSD
 Group: System/Libraries
 Source0: http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
 #Fedora specific patch
 Patch1: libunwind-disable-setjmp.patch
+Patch2: libunwind-automake-1.13.patch
 Patch3: libunwind-arm-register-rename.patch
 URL: http://savannah.nongnu.org/projects/libunwind
 ExclusiveArch: %{arm} hppa ia64 mips ppc ppc64 %{ix86} x86_64
@@ -42,6 +43,13 @@ Group: Development/C
 Requires: libunwind = %{version}-%{release}
 Provides: libunwind-devel = %{version}-%{release}
 
+%track
+prog %name = {
+	url = http://mirror3.layerjet.com/nongnu/libunwind/
+	regex = %name-(__VER__)\.tar\.gz
+	version = %version
+}
+
 %description -n %{develname}
 The libunwind-devel package includes the libraries and header files for
 libunwind.
@@ -49,6 +57,7 @@ libunwind.
 %prep
 %setup -q
 %patch1 -p1
+%patch2 -p1 -b .am113~
 %patch3 -p1 -b .arm
 
 %build
