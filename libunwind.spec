@@ -1,47 +1,41 @@
-# rpmbuild parameters:
-# --without check: Do not run the testsuite.  Default is to run it.
-%define major           1
-%define oname           unwind
-%define libname         %mklibname %{oname} %major
-%define develname       %mklibname %{oname} -d
+%define oname	unwind
+%define major	8
+%define libname	%mklibname %{oname} %{major}
+%define devname	%mklibname %{oname} -d
 
-
-Summary: An unwinding library
-Name: libunwind
-Version: 1.0.1
-Release: 3
-License: BSD
-Group: System/Libraries
-Source0: http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
+Summary:	An unwinding library
+Name:		libunwind
+Version:	1.0.1
+Release:	4
+License:	BSD
+Group:		System/Libraries
+Url:		http://savannah.nongnu.org/projects/libunwind
+Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
 #Fedora specific patch
-Patch1: libunwind-disable-setjmp.patch
-Patch2: libunwind-automake-1.13.patch
-Patch3: libunwind-arm-register-rename.patch
-URL: http://savannah.nongnu.org/projects/libunwind
-ExclusiveArch: %{arm} hppa ia64 mips ppc ppc64 %{ix86} x86_64
+Patch1:		libunwind-disable-setjmp.patch
+Patch2:		libunwind-automake-1.13.patch
+Patch3:		libunwind-arm-register-rename.patch
 
-BuildRequires: automake libtool autoconf
-
-# host != target would cause REMOTE_ONLY build even if building i386 on x86_64.
-#% global _host %{_target_platform}
+BuildRequires:	libtool
 
 %description
 Libunwind provides a C ABI to determine the call-chain of a program.
 This version of libunwind is targetted for the ia64 platform.
 
-%package -n     %{libname}
-Summary:        Dynamic libraries from %{oname}
-Group:          System/Libraries
-Provides:       %{name} = %{version}-%{release}
+%package -n %{libname}
+Summary:	Dynamic libraries from %{oname}
+Group:		System/Libraries
+Provides:	%{name} = %{version}-%{release}
+Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libname}
 Dynamic libraries from %{name}.
 
-%package -n %{develname}
-Summary: Development package for libunwind
-Group: Development/C
-Requires: libunwind = %{version}-%{release}
-Provides: libunwind-devel = %{version}-%{release}
+%package -n %{devname}
+Summary:	Development package for libunwind
+Group:		Development/C
+Requires:	%{libname} = %{version}-%{release}
+Provides:	%{name}-devel = %{version}-%{release}
 
 %track
 prog %name = {
@@ -50,28 +44,24 @@ prog %name = {
 	version = %version
 }
 
-%description -n %{develname}
+%description -n %{devname}
 The libunwind-devel package includes the libraries and header files for
 libunwind.
 
 %prep
 %setup -q
-%patch1 -p1
-%patch2 -p1 -b .am113~
-%patch3 -p1 -b .arm
+%apply_patches
+autoreconf -fi
 
 %build
-aclocal
-libtoolize --force
-autoheader
-automake --add-missing
-autoconf
-%configure2_5x --enable-static --enable-shared
-make
+%configure2_5x \
+	--enable-static \
+	--enable-shared
+
+%make
 
 %install
 %makeinstall_std
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 # /usr/include/libunwind-ptrace.h
 # [...] aren't really part of the libunwind API.  They are implemented in
@@ -91,9 +81,9 @@ echo ====================TESTSUITE DISABLED=========================
 %endif
 
 %files -n %{libname}
-%{_libdir}/libunwind*.so.*
+%{_libdir}/libunwind*.so.%{major}*
 
-%files -n %{develname}
+%files -n %{devname}
 %doc COPYING README NEWS
 %{_libdir}/libunwind*.so
 %{_libdir}/libunwind-ptrace.a
