@@ -2,6 +2,7 @@
 %define major	8
 %define libname	%mklibname %{oname} %{major}
 %define devname	%mklibname %{oname} -d
+%define _disable_ld_no_undefined 1
 
 Summary:	An unwinding library
 Name:		libunwind
@@ -53,8 +54,8 @@ autoreconf -fi
 
 %build
 %configure2_5x \
-	--enable-static \
-	--enable-shared
+       --enable-static \
+       --enable-shared
 
 %make
 
