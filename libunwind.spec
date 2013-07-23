@@ -1,5 +1,5 @@
 %define oname	unwind
-%define major	8
+%define major	0
 %define libname	%mklibname %{oname} %{major}
 %define devname	%mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
