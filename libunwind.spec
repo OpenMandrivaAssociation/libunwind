@@ -1,6 +1,9 @@
-%define oname	unwind
-%define major	0
+%define oname		unwind
+%define onamedump	unwindcoredump
+%define major		8
+%define majordump	0
 %define libname	%mklibname %{oname} %{major}
+%define libdump	%mklibname %{onamedump} %{majordump}
 %define devname	%mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
 
@@ -30,10 +33,21 @@ Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 %description -n %{libname}
 Dynamic libraries from %{name}.
 
+%package -n %{libdump}
+Summary:	Dynamic libraries from %{oname}
+Group:		System/Libraries
+Provides:	%{name}-coredump = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
+Obsoletes:	%{_lib}unwind1 < 1.0.1-1
+
+%description -n %{libdump}
+Dynamic libraries from %{name}.
+
 %package -n %{devname}
 Summary:	Development package for libunwind
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
+Requires:	%{name}-coredump = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
 %track
@@ -81,6 +95,9 @@ echo ====================TESTSUITE DISABLED=========================
 
 %files -n %{libname}
 %{_libdir}/libunwind*.so.%{major}*
+
+%files -n %{libdump}
+%{_libdir}/libunwind-coredump.so.%{majordump}*
 
 %files -n %{devname}
 %doc COPYING README NEWS
