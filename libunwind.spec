@@ -10,7 +10,7 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	4
+Release:	5
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
