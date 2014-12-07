@@ -12,7 +12,7 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	8
+Release:	9
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
