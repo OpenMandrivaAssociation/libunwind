@@ -1,18 +1,18 @@
-%define oname		unwind
-%define onamedump	unwindcoredump
-%define major		8
-%define majordump	0
-%define libname	%mklibname %{oname} %{major}
-%define libdump	%mklibname %{onamedump} %{majordump}
-%define devname	%mklibname %{oname} -d
+%define oname unwind
+%define onamedump unwindcoredump
+%define major 8
+%define majordump 0
+%define libname %mklibname %{oname} %{major}
+%define libdump %mklibname %{onamedump} %{majordump}
+%define devname %mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
 
-%bcond_without	uclibc
+%bcond_without uclibc
 
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	9
+Release:	10
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
