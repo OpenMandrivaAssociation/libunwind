@@ -12,7 +12,7 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	11
+Release:	12
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
@@ -20,6 +20,7 @@ Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version
 #Fedora specific patch
 Patch1:		libunwind-disable-setjmp.patch
 Patch2:		libunwind-aarch64.patch
+Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 %if %{with uclibc}
 BuildRequires:	uClibc-devel

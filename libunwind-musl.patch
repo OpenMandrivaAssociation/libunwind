@@ -1,0 +1,25 @@
+--- libunwind-1.1/configure.ac.omv~	2015-06-24 14:49:23.088619933 +0200
++++ libunwind-1.1/configure.ac	2015-06-24 14:49:23.217619091 +0200
+@@ -135,6 +135,9 @@ AM_CONDITIONAL(OS_LINUX, expr x$target_o
+ AM_CONDITIONAL(OS_HPUX, expr x$target_os : xhpux >/dev/null)
+ AM_CONDITIONAL(OS_FREEBSD, expr x$target_os : xfreebsd >/dev/null)
+ 
++AC_CHECK_HEADERS([execinfo.h], [have_execinfo_h=yes], [have_execinfo_h=no])
++AM_CONDITIONAL(HAVE_EXECINFO_H, expr x$have_execinfo_h : xyes >/dev/null)
++
+ AC_MSG_CHECKING([for ELF helper width])
+ case "${target_arch}" in
+ (arm|hppa|ppc32|x86|sh) use_elf32=yes; AC_MSG_RESULT([32]);;
+--- libunwind-1.1/tests/Makefile.am.omv~	2015-06-24 14:49:23.133619639 +0200
++++ libunwind-1.1/tests/Makefile.am	2015-06-24 14:49:23.138619607 +0200
+@@ -58,8 +58,10 @@ endif
+ 
+ if OS_LINUX
+ if BUILD_COREDUMP
++if HAVE_EXECINFO_H
+  check_SCRIPTS_cdep += run-coredump-unwind
+  noinst_PROGRAMS_cdep += test-coredump-unwind
++endif # GLIBC
+ 
+ if HAVE_LZMA
+  check_SCRIPTS_cdep += run-coredump-unwind-mdi
