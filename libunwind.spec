@@ -7,12 +7,12 @@
 %define devname %mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
 
-%bcond_without uclibc
+%bcond_with uclibc
 
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	14
+Release:	15
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
