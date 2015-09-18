@@ -121,6 +121,10 @@ pushd uclibc
 popd
 %endif
 
+%ifarch %arm
+export CC=gcc
+export CXX=g++
+%endif
 mkdir -p glibc
 pushd glibc
 %configure \
