@@ -7,12 +7,10 @@
 %define devname %mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
 
-%bcond_with uclibc
-
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.1
-Release:	15
+Release:	16
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
@@ -23,9 +21,6 @@ Patch1:		libunwind-disable-setjmp.patch
 Patch2:		libunwind-aarch64.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
-%if %{with uclibc}
-BuildRequires:	uClibc-devel
-%endif
 
 %track
 prog %name = {
@@ -47,37 +42,6 @@ Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 %description -n %{libname}
 Dynamic libraries from %{name}.
 
-%if %{with uclibc}
-%package -n uclibc-%{libname}
-Summary:	Dynamic libraries from %{oname} (uClibc build)
-Group:		System/Libraries
-
-%description -n uclibc-%{libname}
-Dynamic libraries from %{name}.
-
-%package -n uclibc-%{libdump}
-Summary:	Dynamic libraries from %{oname} (uClibc build)
-Group:		System/Libraries
-Provides:	uclibc-%{name}-coredump = %{version}-%{release}
-Requires:	uclibc-%{libdump} = %{version}-%{release}
-
-%description -n uclibc-%{libdump}
-Dynamic libraries from %{name}.
-
-%package -n uclibc-%{devname}
-Summary:	Development package for libunwind
-Group:		Development/C
-Requires:	uclibc-%{libname} = %{version}-%{release}
-Requires:	uclibc-%{name}-coredump = %{version}-%{release}
-Requires:	%{devname} = %{version}-%{release}
-Provides:	uclibc-%{name}-devel = %{version}-%{release}
-Conflicts:	%{devname} < 1.1-13
-
-%description -n uclibc-%{devname}
-The libunwind-devel package includes the libraries and header files for
-libunwind.
-%endif
-
 %package -n %{libdump}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
@@ -93,10 +57,6 @@ Summary:	Development package for libunwind
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Requires:	%{name}-coredump = %{version}-%{release}
-%if %{with uclibc}
-Requires:	uclibc-%{libname} = %{version}-%{release}
-Requires:	uclibc-%{name}-coredump = %{version}-%{release}
-%endif
 Provides:	%{name}-devel = %{version}-%{release}
 
 %description -n %{devname}
@@ -109,36 +69,19 @@ libunwind.
 autoreconf -fi
 
 %build
-export CONFIGURE_TOP=$PWD
-%if %{with uclibc}
-mkdir -p uclibc
-pushd uclibc
-%uclibc_configure \
-       --enable-static \
-       --enable-shared
-
-%make
-popd
-%endif
-
 %ifarch %arm
 export CC=gcc
 export CXX=g++
 %endif
-mkdir -p glibc
-pushd glibc
+
 %configure \
        --enable-static \
        --enable-shared
 
 %make
-popd
 
 %install
-%if %{with uclibc}
-%makeinstall_std -C uclibc
-%endif
-%makeinstall_std -C glibc
+%makeinstall_std
 
 # /usr/include/libunwind-ptrace.h
 # [...] aren't really part of the libunwind API.  They are implemented in
@@ -147,14 +90,6 @@ mv -f %{buildroot}%{_libdir}/libunwind-ptrace.a %{buildroot}%{_libdir}/libunwind
 rm %{buildroot}%{_libdir}/libunwind*.a
 mv -f %{buildroot}%{_libdir}/libunwind-ptrace.a-save %{buildroot}%{_libdir}/libunwind-ptrace.a
 rm %{buildroot}%{_libdir}/libunwind-ptrace*.so*
-
-%if %{with uclibc}
-mv -f %{buildroot}%{uclibc_root}%{_libdir}/libunwind-ptrace.a %{buildroot}%{uclibc_root}%{_libdir}/libunwind-ptrace.a-save
-rm %{buildroot}%{uclibc_root}%{_libdir}/libunwind*.a
-mv -f %{buildroot}%{uclibc_root}%{_libdir}/libunwind-ptrace.a-save %{buildroot}%{uclibc_root}%{_libdir}/libunwind-ptrace.a
-rm  %{buildroot}%{uclibc_root}%{_libdir}/libunwind-ptrace*.so*
-rm %{buildroot}%{uclibc_root}%{_libdir}/pkgconfig/libunwind*.pc
-%endif
 
 %check
 %if 0%{?_with_check:1} || 0%{?_with_testsuite:1}
@@ -170,18 +105,6 @@ echo ====================TESTSUITE DISABLED=========================
 
 %files -n %{libdump}
 %{_libdir}/libunwind-coredump.so.%{majordump}*
-
-%if %{with uclibc}
-%files -n uclibc-%{libname}
-%{uclibc_root}%{_libdir}/libunwind*.so.%{major}*
-
-%files -n uclibc-%{libdump}
-%{uclibc_root}%{_libdir}/libunwind-coredump.so.%{majordump}*
-
-%files -n uclibc-%{devname}
-%{uclibc_root}%{_libdir}/libunwind*.so
-%{uclibc_root}%{_libdir}/libunwind-ptrace.a
-%endif
 
 %files -n %{devname}
 %doc COPYING README NEWS
