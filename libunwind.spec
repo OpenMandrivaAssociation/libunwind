@@ -2,6 +2,7 @@
 %define onamedump unwindcoredump
 %define major 8
 %define majordump 0
+%define majorsetjmp 0
 %define libname %mklibname %{oname} %{major}
 %define libdump %mklibname %{onamedump} %{majordump}
 %define devname %mklibname %{oname} -d
@@ -38,7 +39,7 @@ This version of libunwind is targetted for the ia64 platform.
 %package -n %{libname}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
-Provides:	%{name} = %{version}-%{release}
+Provides:	%{name} = %{EVRD}
 Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libname}
@@ -47,8 +48,8 @@ Dynamic libraries from %{name}.
 %package -n %{libdump}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
-Provides:	%{name}-coredump = %{version}-%{release}
-Requires:	%{name} = %{version}-%{release}
+Provides:	%{name}-coredump = %{EVRD}
+Requires:	%{name} = %{EVRD}
 Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libdump}
@@ -57,13 +58,16 @@ Dynamic libraries from %{name}.
 %package -n %{devname}
 Summary:	Development package for libunwind
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
-Requires:	%{name}-coredump = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Requires:	%{name}-coredump = %{EVRD}
+Requires:	%{mklibname %{oname}-setjmp %{majorsetjmp}} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 
 %description -n %{devname}
 The libunwind-devel package includes the libraries and header files for
 libunwind.
+
+%dependinglibpackage %{oname}-setjmp %{majorsetjmp}
 
 %prep
 %setup -q
