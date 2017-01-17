@@ -6,6 +6,7 @@
 %define libdump %mklibname %{onamedump} %{majordump}
 %define devname %mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
+%define _disable_lto 1
 
 Summary:	An unwinding library
 Name:		libunwind
@@ -21,6 +22,7 @@ Source1:	%{name}.rpmlintrc
 #Patch1:		libunwind-disable-setjmp.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
+BuildRequires:	pkgconfig(lzma)
 
 %track
 prog %name = {
