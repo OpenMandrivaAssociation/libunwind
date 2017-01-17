@@ -22,7 +22,7 @@ Source1:	%{name}.rpmlintrc
 #Patch1:		libunwind-disable-setjmp.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
-BuildRequires:	pkgconfig(lzma)
+BuildRequires:	pkgconfig(liblzma)
 
 %track
 prog %name = {
