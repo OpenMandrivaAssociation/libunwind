@@ -116,7 +116,6 @@ echo ====================TESTSUITE DISABLED=========================
 %doc COPYING README NEWS
 %{_libdir}/libunwind*.so
 %{_libdir}/libunwind-ptrace.a
-%{_mandir}/*/*
 %{_libdir}/pkgconfig/*.pc
 # <unwind.h> does not get installed for REMOTE_ONLY targets - check it.
 %{_includedir}/unwind.h
