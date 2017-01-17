@@ -9,22 +9,22 @@
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.1
-Release:	16
+Version:	1.2
+Release:	1
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
 Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 #Fedora specific patch
-Patch1:		libunwind-disable-setjmp.patch
-Patch2:		libunwind-aarch64.patch
+# (tpg) dunno if it is still needed
+#Patch1:		libunwind-disable-setjmp.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 
 %track
 prog %name = {
-	url = http://mirror3.layerjet.com/nongnu/libunwind/
+	url = http://download.savannah.gnu.org/releases/libunwind/
 	regex = %name-(__VER__)\.tar\.gz
 	version = %version
 }
