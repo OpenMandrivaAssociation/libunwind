@@ -11,7 +11,7 @@
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.2
+Version:	1.2.1
 Release:	1
 License:	BSD
 Group:		System/Libraries
