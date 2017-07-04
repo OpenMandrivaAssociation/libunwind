@@ -2,29 +2,32 @@
 %define onamedump unwindcoredump
 %define major 8
 %define majordump 0
+%define majorsetjmp 0
 %define libname %mklibname %{oname} %{major}
 %define libdump %mklibname %{onamedump} %{majordump}
 %define devname %mklibname %{oname} -d
 %define _disable_ld_no_undefined 1
+%define _disable_lto 1
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.1
-Release:	16
+Version:	1.2.1
+Release:	1
 License:	BSD
 Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
 Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 #Fedora specific patch
-Patch1:		libunwind-disable-setjmp.patch
-Patch2:		libunwind-aarch64.patch
+# (tpg) dunno if it is still needed
+#Patch1:		libunwind-disable-setjmp.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
+BuildRequires:	pkgconfig(liblzma)
 
 %track
 prog %name = {
-	url = http://mirror3.layerjet.com/nongnu/libunwind/
+	url = http://download.savannah.gnu.org/releases/libunwind/
 	regex = %name-(__VER__)\.tar\.gz
 	version = %version
 }
@@ -36,7 +39,7 @@ This version of libunwind is targetted for the ia64 platform.
 %package -n %{libname}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
-Provides:	%{name} = %{version}-%{release}
+Provides:	%{name} = %{EVRD}
 Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libname}
@@ -45,8 +48,8 @@ Dynamic libraries from %{name}.
 %package -n %{libdump}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
-Provides:	%{name}-coredump = %{version}-%{release}
-Requires:	%{name} = %{version}-%{release}
+Provides:	%{name}-coredump = %{EVRD}
+Requires:	%{name} = %{EVRD}
 Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libdump}
@@ -55,13 +58,16 @@ Dynamic libraries from %{name}.
 %package -n %{devname}
 Summary:	Development package for libunwind
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
-Requires:	%{name}-coredump = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Requires:	%{name}-coredump = %{EVRD}
+Requires:	%{mklibname %{oname}-setjmp %{majorsetjmp}} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 
 %description -n %{devname}
 The libunwind-devel package includes the libraries and header files for
 libunwind.
+
+%dependinglibpackage %{oname}-setjmp %{majorsetjmp}
 
 %prep
 %setup -q
@@ -110,7 +116,6 @@ echo ====================TESTSUITE DISABLED=========================
 %doc COPYING README NEWS
 %{_libdir}/libunwind*.so
 %{_libdir}/libunwind-ptrace.a
-%{_mandir}/*/*
 %{_libdir}/pkgconfig/*.pc
 # <unwind.h> does not get installed for REMOTE_ONLY targets - check it.
 %{_includedir}/unwind.h
