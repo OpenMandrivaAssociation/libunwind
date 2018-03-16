@@ -25,13 +25,6 @@ Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
 
-%track
-prog %name = {
-	url = http://download.savannah.gnu.org/releases/libunwind/
-	regex = %name-(__VER__)\.tar\.gz
-	version = %version
-}
-
 %description
 Libunwind provides a C ABI to determine the call-chain of a program.
 This version of libunwind is targetted for the ia64 platform.
