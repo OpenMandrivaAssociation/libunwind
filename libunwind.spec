@@ -64,7 +64,7 @@ libunwind.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 autoreconf -fi
 
 %build
@@ -73,14 +73,17 @@ export CC=gcc
 export CXX=g++
 %endif
 
+# (tpg) fix linking on znver1
+%global ldflags %{ldflags} -fuse-ld=bfd
+
 %configure \
        --enable-static \
        --enable-shared
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 # /usr/include/libunwind-ptrace.h
 # [...] aren't really part of the libunwind API.  They are implemented in
