@@ -29,6 +29,7 @@ Source1:	%{name}.rpmlintrc
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	texlive texlive-latex2man
 
 %description
 Libunwind provides a C ABI to determine the call-chain of a program.
