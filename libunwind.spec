@@ -8,7 +8,7 @@
 %define libname %mklibname %{oname} %{major}
 %define libdump %mklibname %{onamedump} %{majordump}
 %define libptrace %mklibname %{onameptrace} %{majorptrace}
-%define devname %mklibname %{oname} -d
+%define devname %mklibname %{oname}-nongnu -d
 %define _disable_ld_no_undefined 1
 %define _disable_lto 1
 %define beta rc2
@@ -46,7 +46,7 @@ Dynamic libraries from %{name}.
 %package -n %{libdump}
 Summary:	Dynamic libraries from %{oname}
 Group:		System/Libraries
-Requires:	%{name} = %{EVRD}
+Requires:	%{libname} = %{EVRD}
 Obsoletes:	%{_lib}unwind1 < 1.0.1-1
 
 %description -n %{libdump}
@@ -65,7 +65,7 @@ Dynamic libraries from %{name}.
 Summary:	Development package for libunwind
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
-Requires:	%{name}-coredump = %{EVRD}
+Requires:	%{libdump} = %{EVRD}
 Requires:	%{setjmpname} = %{EVRD}
 
 %description -n %{devname}
