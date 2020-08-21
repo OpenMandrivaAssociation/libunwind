@@ -16,16 +16,14 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.5
-Release:	%{?beta:0.%{beta}.}1
+Release:	%{?beta:0.%{beta}.}2
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
 Url:		http://savannah.nongnu.org/projects/libunwind
 Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}%{?beta:-%{beta}}.tar.gz
 Source1:	%{name}.rpmlintrc
-#Fedora specific patch
-# (tpg) dunno if it is still needed
-#Patch1:		libunwind-disable-setjmp.patch
+Patch1:		https://github.com/libunwind/libunwind/commit/6e9f3999d00856d6534a9179dbc18d59ff8a5748.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
@@ -105,8 +103,11 @@ export CXX=g++
 
 mv %{buildroot}%{_libdir}/libunwind/pkgconfig %{buildroot}%{_libdir}
 
+# FIXME re-enable once we switch to LLVM libunwind by default
+%if 0
 # Don't conflict with LLVM libunwind
 mv %{buildroot}%{_libdir}/pkgconfig/libunwind.pc %{buildroot}%{_libdir}/pkgconfig/libunwind-nongnu.pc
+%endif
 
 cd %{buildroot}%{_libdir}
 ln -s libunwind/*.so.* .
