@@ -13,10 +13,16 @@
 %define _disable_lto 1
 %define beta rc2
 
+%ifarch %{x86_64}
+%bcond_without compat32
+%define lib32name %mklib32name %{oname} %{major}
+%define dev32name %mklib32name %{oname}-nongnu -d
+%endif
+
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.5
-Release:	%{?beta:0.%{beta}.}2
+Release:	%{?beta:0.%{beta}.}3
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
@@ -77,29 +83,74 @@ Group:		System/Libraries
 %description -n %{setjmpname}
 Libunwind setjmp library
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	32-bit version of the libunwind library
+Group:		System/Libraries
+
+%description -n %{lib32name}
+32-bit version of the libunwind library
+
+%files -n %{lib32name}
+%{_prefix}/lib/libunwind/libunwind*.so.*
+%{_prefix}/lib/lib*.so.*
+
+%package -n %{dev32name}
+Summary:	Development files for the 32-bit version of libunwind
+Group:		Development/C and C++
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{devname} = %{EVRD}
+
+%description -n %{dev32name}
+Development files for the 32-bit version of libunwind
+
+%files -n %{dev32name}
+%{_prefix}/lib/libunwind/lib*.so
+%{_prefix}/lib/libunwind/lib*.a
+%{_prefix}/lib/pkgconfig/*.pc
+%endif
+
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?beta:-%{beta}}
 autoreconf -fi
 
-%build
-%ifarch %arm
-export CC=gcc
-export CXX=g++
-%endif
-
-# (tpg) fix linking on znver1
-#global ldflags %{ldflags} -fuse-ld=bfd
-
+export CONFIGURE_TOP="$(pwd)"
+mkdir build
+cd build
 %configure \
 	--includedir=%{_includedir}/libunwind \
 	--libdir=%{_libdir}/libunwind \
 	--enable-static \
 	--enable-shared
 
-%make_build
+%if %{with compat32}
+cd ..
+mkdir build32
+cd build32
+%configure32 \
+	--includedir=%{_includedir}/libunwind \
+	--libdir=%{_prefix}/lib/libunwind \
+	--target=i686-openmandriva-linux-gnu \
+	--host=i686-openmandriva-linux-gnu \
+	--enable-static \
+	--enable-shared
+%endif
+
+%build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C build
 
 %install
-%make_install
+%if %{with compat32}
+%make_install -C build32
+mv %{buildroot}%{_prefix}/lib/libunwind/pkgconfig %{buildroot}%{_prefix}/lib
+cd %{buildroot}%{_prefix}/lib
+ln -s libunwind/*.so.* .
+cd -
+%endif
+%make_install -C build
 
 mv %{buildroot}%{_libdir}/libunwind/pkgconfig %{buildroot}%{_libdir}
 
