@@ -11,7 +11,7 @@
 %define devname %mklibname %{oname}-nongnu -d
 %define _disable_ld_no_undefined 1
 %define _disable_lto 1
-%define beta rc2
+%define beta 0
 
 %ifarch %{x86_64}
 %bcond_without compat32
@@ -21,8 +21,8 @@
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.5
-Release:	%{?beta:0.%{beta}.}3
+Version:	1.5.0
+Release:	%{?beta:0.%{beta}.}1
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
@@ -33,6 +33,7 @@ Patch1:		https://github.com/libunwind/libunwind/commit/6e9f3999d00856d6534a9179d
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	texlive texlive-latex2man
 
 %description
