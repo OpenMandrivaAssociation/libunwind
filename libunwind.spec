@@ -11,7 +11,6 @@
 %define devname %mklibname %{oname}-nongnu -d
 %define _disable_ld_no_undefined 1
 %define _disable_lto 1
-%define beta 0
 
 %ifarch %{x86_64}
 %bcond_without compat32
