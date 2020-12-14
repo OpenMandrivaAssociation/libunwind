@@ -28,7 +28,6 @@ Group:		System/Libraries
 Url:		http://savannah.nongnu.org/projects/libunwind
 Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}%{?beta:-%{beta}}.tar.gz
 Source1:	%{name}.rpmlintrc
-Patch1:		https://github.com/libunwind/libunwind/commit/6e9f3999d00856d6534a9179dbc18d59ff8a5748.patch
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
