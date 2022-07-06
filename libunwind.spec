@@ -21,7 +21,7 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.6.2
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
@@ -32,7 +32,8 @@ Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	texlive texlive-latex2man
+BuildRequires:	texlive
+BuildRequires:	texlive-latex2man
 
 %description
 Libunwind provides a C ABI to determine the call-chain of a program.
@@ -86,6 +87,7 @@ Libunwind setjmp library
 %package -n %{lib32name}
 Summary:	32-bit version of the libunwind library
 Group:		System/Libraries
+BuildRequires:	libc6
 
 %description -n %{lib32name}
 32-bit version of the libunwind library
@@ -190,4 +192,4 @@ echo ====================TESTSUITE DISABLED=========================
 %{_libdir}/libunwind/libunwind*.a
 %{_libdir}/pkgconfig/*.pc
 %{_includedir}/libunwind
-%{_mandir}/man3/*
+%doc %{_mandir}/man3/*
