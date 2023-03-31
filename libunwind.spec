@@ -20,7 +20,7 @@
 Summary:	An unwinding library
 Name:		libunwind
 Version:	1.6.2
-Release:	3
+Release:	4
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
