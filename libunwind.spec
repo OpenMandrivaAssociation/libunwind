@@ -221,4 +221,4 @@ echo ====================TESTSUITE DISABLED=========================
 %{_libdir}/libunwind/libunwind*.a
 %{_libdir}/pkgconfig/*.pc
 %{_includedir}/libunwind
-%doc %{_mandir}/man3/*
+%optional %doc %{_mandir}/man3/*
