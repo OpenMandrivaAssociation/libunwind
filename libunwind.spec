@@ -207,6 +207,7 @@ echo ====================TESTSUITE DISABLED=========================
 %files -n %{libname}
 %{_libdir}/libunwind/libunwind*.so.%{major}*
 %{_libdir}/libunwind*.so.*
+%{_libexecdir}/libunwind/
 
 %files -n %{libdump}
 %{_libdir}/libunwind/libunwind-coredump.so.%{majordump}*
