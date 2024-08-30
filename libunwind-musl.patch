@@ -1,7 +1,7 @@
-diff -up libunwind-1.5-rc2/configure.ac.1~ libunwind-1.5-rc2/configure.ac
---- libunwind-1.5-rc2/configure.ac.1~	2020-05-20 00:30:20.970024706 +0200
-+++ libunwind-1.5-rc2/configure.ac	2020-05-20 00:31:37.885330054 +0200
-@@ -186,6 +186,9 @@ AM_CONDITIONAL(OS_FREEBSD, expr x$target
+diff -uraN libunwind-1.8.1/configure.ac omv-libunwind-1.8.1/configure.ac
+--- libunwind-1.8.1/configure.ac	2024-02-21 14:40:20.000000000 +0100
++++ omv-libunwind-1.8.1/configure.ac	2024-08-30 17:51:08.916216809 +0200
+@@ -366,6 +366,9 @@
  AM_CONDITIONAL(OS_QNX, expr x$target_os : xnto-qnx >/dev/null)
  AM_CONDITIONAL(OS_SOLARIS, expr x$target_os : xsolaris >/dev/null)
  
@@ -9,12 +9,12 @@ diff -up libunwind-1.5-rc2/configure.ac.1~ libunwind-1.5-rc2/configure.ac
 +AM_CONDITIONAL(HAVE_EXECINFO_H, expr x$have_execinfo_h : xyes >/dev/null)
 +
  AC_MSG_CHECKING([for ELF helper width])
- case "${target_arch}" in
- (arm|hppa|ppc32|x86|sh) use_elf32=yes; AC_MSG_RESULT([32]);;
-diff -up libunwind-1.5-rc2/tests/Makefile.am.1~ libunwind-1.5-rc2/tests/Makefile.am
---- libunwind-1.5-rc2/tests/Makefile.am.1~	2020-04-28 17:49:14.000000000 +0200
-+++ libunwind-1.5-rc2/tests/Makefile.am	2020-05-20 00:30:20.970024706 +0200
-@@ -73,8 +73,10 @@ endif
+ AS_CASE([${target_arch}],
+         [arm|hppa|ppc32|x86|sh],           [use_elf32=yes; AC_MSG_RESULT([32])],
+diff -uraN libunwind-1.8.1/tests/Makefile.am omv-libunwind-1.8.1/tests/Makefile.am
+--- libunwind-1.8.1/tests/Makefile.am	2024-02-21 14:39:50.000000000 +0100
++++ omv-libunwind-1.8.1/tests/Makefile.am	2024-08-30 17:52:32.553446546 +0200
+@@ -138,8 +138,10 @@
  
  if OS_LINUX
  if BUILD_COREDUMP
