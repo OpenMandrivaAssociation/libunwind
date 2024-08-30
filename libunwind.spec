@@ -19,13 +19,15 @@
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.6.2
-Release:	4
+Version:	1.8.1
+Release:	1
 License:	BSD
 Group:		System/Libraries
 # See also https://github.com/libunwind/libunwind
-Url:		http://savannah.nongnu.org/projects/libunwind
-Source0:	http://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}%{?beta:-%{beta}}.tar.gz
+Url:		https://savannah.nongnu.org/projects/libunwind
+Source0:	https://github.com/libunwind/libunwind/releases/download/v%{version}/libunwind-%{version}.tar.gz
+# No longer updated
+#Source0:	https://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}%{?beta:-%{beta}}.tar.gz
 Source1:	%{name}.rpmlintrc
 Patch3:		libunwind-musl.patch
 BuildRequires:	libtool
