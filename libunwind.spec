@@ -30,6 +30,11 @@ Source0:	https://github.com/libunwind/libunwind/releases/download/v%{version}/li
 #Source0:	https://download.savannah.gnu.org/releases/libunwind/libunwind-%{version}%{?beta:-%{beta}}.tar.gz
 Source1:	%{name}.rpmlintrc
 Patch3:		libunwind-musl.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(zlib)
