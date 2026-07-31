@@ -19,7 +19,7 @@
 
 Summary:	An unwinding library
 Name:		libunwind
-Version:	1.8.1
+Version:	1.8.3
 Release:	1
 License:	BSD
 Group:		System/Libraries
