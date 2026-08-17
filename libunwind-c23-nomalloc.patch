@@ -1,0 +1,20 @@
+In C23, T foo() is a function with no parameters, so calling the
+interposed malloc through void *(*func)() is a compile error.
+Give the function pointer the malloc prototype, as Gtest-nocalloc.c
+already does.
+
+--- a/tests/Gtest-nomalloc.c
++++ b/tests/Gtest-nomalloc.c
+@@ -37,10 +37,10 @@ int in_unwind;
+ void *
+ malloc(size_t s)
+ {
+-  static void * (*func)();
++  static void * (*func)(size_t);
+ 
+   if(!func)
+-    func = (void *(*)()) dlsym(RTLD_NEXT, "malloc");
++    func = (void *(*)(size_t)) dlsym(RTLD_NEXT, "malloc");
+ 
+   if (in_unwind) {
+     num_errors++;
