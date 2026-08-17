@@ -16,6 +16,7 @@
 %define lib32name %mklib32name %{oname} %{major}
 %define dev32name %mklib32name %{oname}-nongnu -d
 %endif
+%bcond_without tests
 
 Summary:	An unwinding library
 Name:		libunwind
@@ -89,6 +90,19 @@ Group:		System/Libraries
 %description -n %{setjmpname}
 Libunwind setjmp library
 
+%if %{with tests}
+%package tests
+Summary:	Test suite for %{name}
+Group:		Development/Other
+Requires:	%{libname} = %{EVRD}
+
+%description tests
+Upstream test programs for %{name}. They are not needed at runtime.
+
+%files tests
+%{_libexecdir}/libunwind/
+%endif
+
 %if %{with compat32}
 %package -n %{lib32name}
 Summary:	32-bit version of the libunwind library
@@ -128,7 +142,10 @@ cd build
 	--includedir=%{_includedir}/libunwind \
 	--libdir=%{_libdir}/libunwind \
 	--enable-static \
-	--enable-shared
+	--enable-shared \
+%if %{without tests}
+	--disable-tests \
+%endif
 
 %if %{with compat32}
 cd ..
@@ -140,7 +157,8 @@ cd build32
 	--target=i686-openmandriva-linux-gnu \
 	--host=i686-openmandriva-linux-gnu \
 	--enable-static \
-	--enable-shared
+	--enable-shared \
+	--disable-tests
 %endif
 
 %build
@@ -201,6 +219,7 @@ for i in $(find %{buildroot} -type f -name "*.[ao]"); do
 done
 
 %check
+%if %{with tests}
 %if 0%{?_with_check:1} || 0%{?_with_testsuite:1}
 echo ====================TESTING=========================
 make check || true
@@ -208,11 +227,13 @@ echo ====================TESTING END=====================
 %else
 echo ====================TESTSUITE DISABLED=========================
 %endif
+%else
+echo ====================TESTSUITE DISABLED=========================
+%endif
 
 %files -n %{libname}
 %{_libdir}/libunwind/libunwind*.so.%{major}*
 %{_libdir}/libunwind*.so.*
-%{_libexecdir}/libunwind/
 
 %files -n %{libdump}
 %{_libdir}/libunwind/libunwind-coredump.so.%{majordump}*
